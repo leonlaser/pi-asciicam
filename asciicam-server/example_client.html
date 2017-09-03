@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Live!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        #video {
+            font-family: 'Courier New', 'Courier', monospace;
+            font-size: 10px;
+            line-height: 9px;
+            letter-spacing: -1.5px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-52%);
+        }
+    </style>
+</head>
+<body>
+    <pre id="video"></pre>
+    <script>
+        var ws;
+
+        function connect() {
+            ws = new WebSocket('ws://'+window.location.hostname+':8000')
+            ws.onmessage = function(msg) {
+                  document.getElementById('video').innerHTML = msg.data
+                  ws.send(0); // fixing websocket delay on mobile safari
+            }
+            ws.onclose = function(msg) {
+                console.log("Trying to reconnect ...")
+                setTimeout(connect, 1000)
+            }
+        }
+        connect()
+    </script>
+</body>
+</html>

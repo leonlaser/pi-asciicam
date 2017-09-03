@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Websocket asciicam web client</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        #video {
+            font-family: 'Courier New', 'Courier', monospace;
+            font-size: 10px;
+            line-height: 9px;
+            letter-spacing: -1.5px;
+            text-align: center;
+            position: absolute;
+            z-index: 0;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-52%);
+        }
+        #form {
+            position: fixed;
+            z-index: 1;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 5px 8px;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        #fps {
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            padding: 5px;
+            font-size: 10px;
+        }
+        #fps:after{
+            content: ' fps';
+        }
+    </style>
+</head>
+<body>
+    <div id="fps">0</div>
+    <div id="form">
+        <input id="source" value="localhost:8000" />
+        <button id="start">Connect</button>
+        <button id="stop" disabled>Disconnect</button>
+    </div>
+    <pre id="video"></pre>
+    <script>
+
+        var isMobileSafari = window.navigator.userAgent.match(/iPad|iPhone/i);
+        var ws
+        var video = document.getElementById('video')
+        var fpsDisplay = document.getElementById('fps')
+        var currentFrame = ''
+        var fps = {	
+            startTime : 0,	
+            frameNumber : 0,	
+            getFPS : function(){		
+                this.frameNumber++;		
+                var d = new Date().getTime(),			
+                currentTime = ( d - this.startTime ) / 1000,			
+                result = Math.floor( ( this.frameNumber / currentTime ) );		
+                if( currentTime > 1 ){			
+                    this.startTime = new Date().getTime();			
+                    this.frameNumber = 0;	
+                }		
+                return result;
+            }	
+        }
+
+        function resetForm() {
+            document.getElementById("source").disabled = false
+            document.getElementById("start").disabled = false
+            document.getElementById("stop").disabled = true
+        }
+
+        function render() {
+            if(currentFrame !== video.innerHTML) {
+                video.innerHTML = currentFrame
+            }
+            requestAnimationFrame(render)
+        }
+
+        requestAnimationFrame(render)
+
+        function connect() {
+            ws = new WebSocket('ws://'+document.getElementById("source").value)
+            ws.onopen = function() {
+                document.getElementById("source").disabled = true
+                document.getElementById("start").disabled = true
+                document.getElementById("stop").disabled = false
+            }
+            ws.onmessage = function(msg) {
+                currentFrame = msg.data
+                fpsDisplay.innerHTML = fps.getFPS()
+                console.log(1);
+                if(isMobileSafari) ws.send(0) // fixes delay on mobile safari
+            }
+            ws.onerror = function() {
+                alert('Connecting failed')
+                resetForm()
+            }
+            ws.onclose = function(msg) {
+                resetForm()
+            }
+        }
+        
+        function disconnect() {
+            ws.close()
+            resetForm()
+        }
+
+        document.getElementById("start").addEventListener("click", connect)
+        document.getElementById("stop").addEventListener("click", disconnect)
+
+    </script>
+</body>
+</html>
