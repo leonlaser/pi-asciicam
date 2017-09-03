@@ -41,7 +41,7 @@ func stream(ws *websocket.Conn) {
 	ws.Close()
 }
 
-func recieve() {
+func receive() {
 
 	var message string
 	url := fmt.Sprintf("ws://%s/", source)
@@ -70,7 +70,7 @@ func main() {
 	fmt.Println("  Source:", source)
 	fmt.Println("  Port:", port)
 
-	go recieve()
+	go receive()
 
 	// create a websocket server
 	http.Handle("/", websocket.Handler(stream))

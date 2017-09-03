@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)
+[![Go Report Card](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)](https://goreportcard.com/report/github.com/achjaderleon/pi-asciicam)
 
 # Raspberry Pi ASCII-Cam
 
@@ -11,7 +11,7 @@ The servers are written in golang, the client is simply HTML/CSS/JavaScript.
 
 You can find binaries for Linux and MacOS in `bin/`.
 
-On plattforms other than the Raspberry Pi, `asciicam-server` will only be able to do a conversion from MJPEG to ASCII from an external network source. See [Recieve an external MJPEG stream](#recieve-an-external-mjpeg-stream) on how to do that.
+On plattforms other than the Raspberry Pi, `asciicam-server` will only be able to do a conversion from MJPEG to ASCII from an external network source. See [Receive an external MJPEG stream](#receive-an-external-mjpeg-stream) on how to do that.
 
 I did not test all binaries. Just `linux-arm` and `macos-amd64`.
 
@@ -50,7 +50,7 @@ Run the docker image
 
     docker run -p 9000:9000 -e PORT=9000 -e SOURCE=10.0.0.10:8000 achjaderleon/pi-asciicam-imux
 
-## Recieve an external MJPEG stream
+## Receive an external MJPEG stream
 
 The `asciicam-server` calls `raspvid` directly and uses its MJPEG stream on stdout to generate the ASCII frames.
 
@@ -74,7 +74,7 @@ Based on your needs, your clients can directly connect to your `asciicam-server`
 
 Without a client nobody can see your live stream. You can use two different files. As mentioned earlier, there is a really simple client to show you what is going on: `asciicam-server/example_client.html`.
 
-`webclient/webclient.html` is a bit more advanced, allowing you to connect to any websocket stream by entering an address. It is using requestAnimationFrame() and shows the frames per second, recieved through the websocket connection. It is very helpfull for debugging your setup.
+`webclient/webclient.html` is a bit more advanced, allowing you to connect to any websocket stream by entering an address. It is using requestAnimationFrame() and shows the frames per second, received through the websocket connection. It is very helpfull for debugging your setup.
 
 # Build
 
