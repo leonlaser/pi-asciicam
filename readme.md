@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)
+
 # Raspberry Pi ASCII-Cam
 
 The __pi-ascii-cam__ project allows you to create an ASCII live camera stream from a Raspberry Pi with an attached Raspberry Pi Camera.
