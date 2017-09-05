@@ -89,11 +89,11 @@ This section is mostly for myself. But if you want to built your own setup for s
 
 ### For Linux ARM / Raspberry Pi
 
-    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm/asciicam-imux ./asciicam-imux/
-    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm/asciicam-server ./asciicam-server/
+    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm6/asciicam-imux ./asciicam-imux/
+    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm6/asciicam-server ./asciicam-server/
 
-    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm/asciicam-imux ./asciicam-imux/
-    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm/asciicam-server ./asciicam-server/
+    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm7/asciicam-imux ./asciicam-imux/
+    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm7/asciicam-server ./asciicam-server/
 
 ## For macOS 64-bit
 
