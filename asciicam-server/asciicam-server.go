@@ -148,7 +148,7 @@ func startStream() {
 
 	for scanner.Scan() {
 		b := scanner.Bytes()
-		if len(b) > 0 {
+		if len(b) > 2 && b[0] == byte(0xFF) && b[1] == byte(0xD8) {
 			// i failed to use the splitter correctly ... adding EOI marker ... maybe I am too tired
 			b = append(b, []byte{0xFF, 0xD9}...)
 			frame := decodeJPEG(bytes.NewReader(b))
