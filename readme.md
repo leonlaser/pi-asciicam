@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/achjaderleon/pi-asciicam)](https://goreportcard.com/report/github.com/achjaderleon/pi-asciicam)
+[![Go Report Card](https://goreportcard.com/badge/github.com/leonlaser/pi-asciicam)](https://goreportcard.com/report/github.com/leonlaser/pi-asciicam)
 
 # Raspberry Pi ASCII-Cam
 
@@ -43,12 +43,12 @@ __-p__ the port you want your clients to connect to
 
 You can use the existing Dockerfile to build your own image or use the ones already available on hub.docker.com.
 
-* [achjaderleon/pi-asciicam-imux](https://hub.docker.com/r/achjaderleon/pi-asciicam-imux/)
-* [achjaderleon/pi-asciicam-imux-arm](https://hub.docker.com/r/achjaderleon/pi-asciicam-imux-arm/) for usage on a Raspberry Pi e.g. with Hypriot
+* [leonlaser/pi-asciicam-imux](https://hub.docker.com/r/leonlaser/pi-asciicam-imux/)
+* [leonlaser/pi-asciicam-imux-arm](https://hub.docker.com/r/leonlaser/pi-asciicam-imux-arm/) for usage on a Raspberry Pi
 
 Run the docker image
 
-    docker run -p 9000:9000 -e PORT=9000 -e SOURCE=10.0.0.10:8000 achjaderleon/pi-asciicam-imux
+    docker run -p 9000:9000 -e PORT=9000 -e SOURCE=10.0.0.10:8000 leonlaser/pi-asciicam-imux
 
 ## Receive an external MJPEG stream
 
@@ -59,6 +59,10 @@ A Raspberry Pi Zero is quickly overwhelmed when converting 10 frames per second 
 To remove the load of converting frames, you can use your Raspberry Pi to only start `raspivid` itself and stream the MJPEG over the network with netcat:
 
     raspivid -o - -w 320 -h 200 -n -t 0 -cd MJPEG -fps 25 | nc -lkv4 5001
+
+In my expierence netcat somehow gives up at some point. A better alternative for me was to use `ncat`, which belongs to `nmap` and will be installed with it:
+
+    raspivid -o - -w 320 -h 200 -n -t 0 -cd MJPEG -fps 25 | ncat -k -l 5001
 
 Now use `asciicam-server` to connect and open a new websocket:
 
@@ -80,35 +84,13 @@ Without a client nobody can see your live stream. You can use two different file
 
 This section is mostly for myself. But if you want to built your own setup for streaming your video feed, want to modify the sources and deploy them on different machines, help yourself:
 
-## Cross compile go sources
+## Compile go sources
 
-### For Linux 64-bit
-
-    GOOS=linux GOARCH=amd64 go build -o ./bin/linux-amd64/asciicam-imux ./asciicam-imux/
-    GOOS=linux GOARCH=amd64 go build -o ./bin/linux-amd64/asciicam-server ./asciicam-server/
-
-### For Linux ARM / Raspberry Pi
-
-    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm6/asciicam-imux ./asciicam-imux/
-    GOOS=linux GOARCH=arm GOARM=6 go build -o ./bin/linux-arm6/asciicam-server ./asciicam-server/
-
-    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm7/asciicam-imux ./asciicam-imux/
-    GOOS=linux GOARCH=arm GOARM=7 go build -o ./bin/linux-arm7/asciicam-server ./asciicam-server/
-
-## For macOS 64-bit
-
-    GOOS=darwin GOARCH=amd64 go build -o ./bin/macos-amd64/asciicam-imux ./asciicam-imux/
-    GOOS=darwin GOARCH=amd64 go build -o ./bin/macos-amd64/asciicam-server ./asciicam-server/
+See makefile.
 
 ## Build docker images
 
-`asciicam-imux`
-
-    docker build -t achjaderleon/pi-asciicam-imux -f ./asciicam-imux/Dockerfile ./asciicam-imux
-
-`asciicam-imux` for ARM
-
-    docker build -t achjaderleon/pi-asciicam-imux-arm -f ./asciicam-imux/Dockerfile.arm ./asciicam-imux
+See makefile.
 
 # But why?
 

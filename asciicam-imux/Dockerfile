@@ -1,9 +1,6 @@
-FROM golang:1.9
+FROM alpine:3.8
 
-WORKDIR /go/src/app
-COPY . .
+WORKDIR /root
+COPY asciicam-imux .
 
-RUN go-wrapper download   # "go get -d -v ./..."
-RUN go-wrapper install    # "go install -v ./..."
-
-CMD ["go-wrapper", "run"] # ["app"]
+CMD ["./asciicam-imux"]

@@ -1,9 +1,6 @@
-FROM arm32v7/golang:latest
+FROM arm32v7/ubuntu:18.04
 
-WORKDIR /go/src/app
-COPY . .
+WORKDIR /root
+COPY asciicam-imux .
 
-RUN go-wrapper download   # "go get -d -v ./..."
-RUN go-wrapper install    # "go install -v ./..."
-
-CMD ["go-wrapper", "run"] # ["app"]
+CMD ["./asciicam-imux"]
