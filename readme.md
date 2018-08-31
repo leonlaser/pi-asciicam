@@ -23,7 +23,7 @@ You are now able to connect to a websocket on port 8000 on all network interface
 
 Show all possible options and defaults:
 
-    ./asciicam--server --help
+    ./asciicam-server --help
 
 ## Serve clients from other machines
 
