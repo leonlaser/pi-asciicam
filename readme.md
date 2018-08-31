@@ -2,7 +2,7 @@
 
 # Raspberry Pi ASCII-Cam
 
-The __pi-ascii-cam__ project allows you to create an ASCII live camera stream from a Raspberry Pi with an attached Raspberry Pi Camera.
+The __pi-ascii-cam__ project allows you to create an ASCII live camera stream from a Raspberry Pi with an attached Raspberry Pi Camera or any MJPEG stream.
 It is utilizing `raspivid` to convert its MJPEG stream into an ASCII character representation and transport them over a websocket.
 
 The servers are written in golang, the client is simply HTML/CSS/JavaScript.
@@ -73,6 +73,14 @@ Now your Raspberry Pi only sends a video stream and another machine running `asc
 Based on your needs, your clients can directly connect to your `asciicam-server` or you can use `asciicam-imux` to scale:
 
 -> Raspberry Pi running `raspivid` streams to -> a Machine running `asciicam-server` serving a websocket, which gets distributes by -> n-Machines running `asciicam-imux` in a docker swarm or using a loadbalancer for your clients to connect to.
+
+## Using an USB webcam
+
+Because `asciicam-server` is able to retrieve any MPJEG stream, you can use any source and convert it to an ASCII video. Here is an example on using `avconv` to access you local video device and start an MJPEG stream:
+
+    avconv -f video4linux2 -s 320x200 -i /dev/video0 -r 15 -f mjpeg tcp://0.0.0.0:5001?listen
+
+Now use `asciicam-server` with the `-net` parameter to connect.
 
 # Client
 
