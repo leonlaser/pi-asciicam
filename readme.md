@@ -2,6 +2,8 @@
 
 # Raspberry Pi ASCII-Cam
 
+![pi-asciicam demo GIF](demo.gif)
+
 The __pi-ascii-cam__ project allows you to create an ASCII live camera stream from a Raspberry Pi with an attached Raspberry Pi Camera or any MJPEG stream.
 It is utilizing `raspivid` to convert its MJPEG stream into an ASCII character representation and transport them over a websocket.
 
