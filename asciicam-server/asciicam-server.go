@@ -146,6 +146,12 @@ func startStream() {
 
 	scanner.Split(split)
 
+	framesServed := 0
+	framesSkipped := 0
+
+	buffer := make([]byte, 0, 64*1024)
+	scanner.Buffer(buffer, 1024*1024)
+
 	for scanner.Scan() {
 		b := scanner.Bytes()
 		if len(b) > 2 && b[0] == byte(0xFF) && b[1] == byte(0xD8) {
@@ -153,16 +159,24 @@ func startStream() {
 			b = append(b, []byte{0xFF, 0xD9}...)
 			frame := decodeJPEG(bytes.NewReader(b))
 			ascii := ascii(frame)
+			framesServed++
 			// send frame to every active ws
 			for _, c := range channels {
 				c <- ascii
 			}
+		} else {
+			framesSkipped++
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("Invalid input: %s", err)
 	}
+
+	fmt.Println("The stream has ended.")
+	fmt.Println(framesServed, "frame(s) were served.")
+	fmt.Println(framesSkipped, "frame(s) were skipped.")
+	startStream()
 }
 
 func decodeJPEG(reader io.Reader) image.Image {
