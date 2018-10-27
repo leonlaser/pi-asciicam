@@ -109,12 +109,3 @@ I was looking for project to learn more about golang, Docker, Docker Swarm and R
 # Thanks
 
 A thank you goes to [idevelop](https://github.com/idevelop) for his awesome [ascii-camera](https://github.com/idevelop/ascii-camera). My image to character conversion is simply a port of his [ascii.js](https://github.com/idevelop/ascii-camera/blob/master/script/ascii.js), which features some links to every step of his image pre-processing before converting it to actual characters.
-
-# Todos and known problems
-
-* `asciicam-server` is very cpu hungry - optimize.
-* Using the`-net` parameter is not very stable. Sometimes I need serveral tries to connect and it does not complain when the source server is available.
-* Sometimes the stream lags - is it the Pi Zero, the websocket, the browser, JavaScript?
-* Clean up, lint, organize and pimp the JavaScript clients.
-* Dockerfile and image for `asciicam-server`.
-* Adjusting contrast and brightness is done in `asciicam-server` itself, because the adjustments in `raspvid` didn't meet my expectations. Still I believe I did something wrong. It could be rechecked if we can adjust them in `raspivid` correctly and remove the image processing from `asciicam-server`.
