@@ -28,6 +28,7 @@ var (
 	contrastFactor int
 	contrast       int
 	brightness     int
+	brightnessMode = BrightnessMethod{Exponential}
 	height         int
 	width          int
 	fps            int
@@ -40,6 +41,7 @@ func arguments() {
 	flag.BoolVar(&help, "help", false, "show help")
 	flag.IntVar(&contrast, "c", 128, "contrast")
 	flag.IntVar(&brightness, "b", 100, "brightness")
+	flag.Var(&brightnessMode, "bm", "Can be 'linear' or 'exponential'")
 	flag.IntVar(&width, "w", 160, "raspivid width")
 	flag.IntVar(&height, "h", 120, "raspivid height")
 	flag.IntVar(&fps, "fps", 10, "raspivid frames per second")
@@ -85,6 +87,10 @@ func contrastColor(c int) int {
 }
 
 func brightenColor(c int) int {
+	if brightnessMode.Is(Exponential) {
+		return truncate(int(math.Sqrt((float64(c)/255.0)*float64(brightness/100)) * 255.0))
+	}
+
 	return truncate(c + brightness)
 }
 
@@ -205,6 +211,7 @@ func main() {
 	fmt.Println("  Address:", addr)
 	fmt.Println("  Contrast:", contrast)
 	fmt.Println("  Brightness:", brightness)
+	fmt.Println("  Brightness Mode:", brightnessMode.String())
 	fmt.Println("  FPS:", fps)
 
 	if help {
